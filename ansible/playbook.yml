@@ -1,0 +1,33 @@
+---
+- hosts: servers
+  become: yes
+  tasks:
+
+    - name: Actualizar paquetes APT
+    apt:
+      update_cache: yes
+      upgrade: yes
+
+    - name: Crear usuario itla
+      user:
+        name: itla
+        state: present
+
+    - name: Crear carpeta app
+      file:
+        path: /home/itla/app
+        state: directory
+        owner: itla
+
+    - name: Crear archivo hola.txt
+      copy:
+        content: "Hola desde Ansible\n"
+        dest: /home/itla/app/hola.txt
+        owner: itla
+
+    - name: Instalar cowsay y htop
+      apt:
+        name:
+          - cowsay
+          - htop
+        state: present
